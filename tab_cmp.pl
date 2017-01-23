@@ -34,7 +34,21 @@ sub read_table_from_file($) {
 return @array_array;
 }
 
+sub print_help() {
+    print << "END_OF_HELP";
+
+Je potrebne zadat nazvy dvoch suborov, v torych sa nachadza popis tabuliek.
+Ako prvy argument je tabulka z ODSky, alebo zdrojova tabulka.
+Druhy argument je popis tabulky z odberatelskeho systemu.
+
+END_OF_HELP
+
+exit 1;
+}
+
 
 
 ### main #
+# Je potrebne porovnat 2 tabulky
+&print_help if( (scalar @ARGV) != 2 );
 
