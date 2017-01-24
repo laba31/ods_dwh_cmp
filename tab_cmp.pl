@@ -2,6 +2,7 @@
 
 use strict;
 use Data::Dumper;
+use Term::ANSIColor;
 
 sub read_table_from_file($) {
     my $filename = shift;
@@ -51,4 +52,37 @@ exit 1;
 ### main #
 # Je potrebne porovnat 2 tabulky
 &print_help if( (scalar @ARGV) != 2 );
+
+# read tables from files
+my @ods_tab = &read_table_from_file( shift @ARGV );
+my @dwh_tab = &read_table_from_file( shift @ARGV );
+
+my ($long_tab, $short_tab) = undef;
+
+# we looking for table with more columns
+if ( (scalar @ods_tab) >= (scalar @dwh_tab) ) {
+    $long_tab  = \@ods_tab;
+    $short_tab = \@dwh_tab;         
+}
+else {
+    $long_tab  = \@dwh_tab;
+    $short_tab = \@ods_tab;         
+}
+
+
+foreach my $long_ref ( @$long_tab ) {
+    my $short_ref = shift @$short_tab;
+
+    # compare column name
+    if($$long_ref[0] ne $$short_ref[0]) {
+        my $txt = $$long_ref[0] . "\t\t" . $$long_ref[1];
+        $txt .= '(' . $$long_ref[2] . ')' if defined $$long_ref[2];
+
+        $txt .= "\t\t\t" . $$short_ref[0] . "\t\t" . $$short_ref[1];
+        $txt .= '(' . $$short_ref[2] . ')' if defined $$short_ref[2];
+
+        print colored($txt, 'bold'), "\n";
+        next;
+    }
+}
 
