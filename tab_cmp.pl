@@ -18,6 +18,8 @@ sub read_table_from_file($) {
         chomp;
         # Vsetky biele znaky na zaciatku riadku zmazat
         s/^\s*//g;
+        # irrelevant for comparing
+        s/NOT NULL//g;
 
         # rozdelenie na zaklade mnozstva bielych znakov
         ($col, $atr) = split /\s+/;
