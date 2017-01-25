@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 
 use strict;
-use Data::Dumper;
 use Term::ANSIColor;
 
 sub read_table_from_file($) {
