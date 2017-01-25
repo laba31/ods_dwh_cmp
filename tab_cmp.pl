@@ -88,15 +88,36 @@ else {
 }
 
 
+
 foreach my $long_ref ( @$long_tab ) {
     my $short_ref = shift @$short_tab;
 
+    # labelling of text, if reason exist
+    my $color_name = undef;
+    # output text
+    my $txt = undef;
+
     # compare column name
     if($$long_ref[0] ne $$short_ref[0]) {
-        my $txt = &txt_compose($long_ref, $short_ref);
-
-        print colored($txt, 'bold'), "\n";
-        next;
+        $color_name = 'bold red';
     }
+    # compare data type
+    elsif($$long_ref[1] ne $$short_ref[1]) {
+        # CHAR and VARCHAR2 specialities :-)
+        # It's not same, but diffrencies are irelevant
+        if((($$long_ref[1] =~ /CHAR/) and ($$short_ref[1] =~ /CHAR/)) and ($$long_ref[2] == $$short_ref[2])) {
+            $color_name = 'bold';
+        }
+    }
+    # compare data precision
+    elsif($$long_ref[2] != $$short_ref[2]) {
+        $color_name = 'bold red';
+    }
+
+    $txt = &txt_compose($long_ref, $short_ref);
+
+    print color($color_name) if defined $color_name;
+    print "$txt", "\n";
+    print color('reset') if defined $color_name;
 }
 
