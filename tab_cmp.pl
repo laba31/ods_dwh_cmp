@@ -31,6 +31,7 @@ sub read_table_from_file($) {
             push @array_array, [$col, $atr];
         }
     }
+    close(FD);
 
 return @array_array;
 }
