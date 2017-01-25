@@ -66,27 +66,44 @@ return $txt;
 }
 
 
+sub table_header($$) {
+    my ($firt_tab_name, $second_tab_name) = @_;
+
+    print "\n\nStandard text = without diffrencies.\n";
+    print colored('Bold text = no important diffrencies between atributes types.', 'bold'), "\n";
+    print colored('Bold and red text = important diffrencies or attributes missing.', 'bold red'), "\n\n";
+    print "${firt_tab_name}\t\t\t\t\t\t${second_tab_name}\n";
+    print "----------------------------------------------------------------------------------\n";
+}
+
+
 
 ### main #
 # Je potrebne porovnat 2 tabulky
 &print_help if( (scalar @ARGV) != 2 );
 
 # read tables from files
-my @ods_tab = &read_table_from_file( shift @ARGV );
-my @dwh_tab = &read_table_from_file( shift @ARGV );
+my @ods_tab = &read_table_from_file( $ARGV[0] );
+my @dwh_tab = &read_table_from_file( $ARGV[1] );
 
-my ($long_tab, $short_tab) = undef;
+my $long_tab = my $short_tab = my $firt_tab_name = my $second_tab_name = undef;
 
 # we looking for table with more columns
 if ( (scalar @ods_tab) >= (scalar @dwh_tab) ) {
     $long_tab  = \@ods_tab;
     $short_tab = \@dwh_tab;         
+    $firt_tab_name = $ARGV[0];
+    $second_tab_name = $ARGV[1];
 }
 else {
     $long_tab  = \@dwh_tab;
     $short_tab = \@ods_tab;         
+    $firt_tab_name = $ARGV[1];
+    $second_tab_name = $ARGV[0];
 }
 
+
+&table_header($firt_tab_name, $second_tab_name);
 
 
 foreach my $long_ref ( @$long_tab ) {
