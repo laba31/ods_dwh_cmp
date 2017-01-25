@@ -51,6 +51,21 @@ exit 1;
 }
 
 
+# Compose line of text for output
+sub txt_compose($$) {
+    my($long_ref, $short_ref) = @_;
+
+    my $txt = $$long_ref[0] . "\t\t" . $$long_ref[1];
+    # ( and ) for data precision
+    $txt .= '(' . $$long_ref[2] . ')' if defined $$long_ref[2];
+
+    $txt .= "\t\t\t" . $$short_ref[0] . "\t\t" . $$short_ref[1];
+    $txt .= '(' . $$short_ref[2] . ')' if defined $$short_ref[2];
+
+return $txt;
+}
+
+
 
 ### main #
 # Je potrebne porovnat 2 tabulky
@@ -78,11 +93,7 @@ foreach my $long_ref ( @$long_tab ) {
 
     # compare column name
     if($$long_ref[0] ne $$short_ref[0]) {
-        my $txt = $$long_ref[0] . "\t\t" . $$long_ref[1];
-        $txt .= '(' . $$long_ref[2] . ')' if defined $$long_ref[2];
-
-        $txt .= "\t\t\t" . $$short_ref[0] . "\t\t" . $$short_ref[1];
-        $txt .= '(' . $$short_ref[2] . ')' if defined $$short_ref[2];
+        my $txt = &txt_compose($long_ref, $short_ref);
 
         print colored($txt, 'bold'), "\n";
         next;
