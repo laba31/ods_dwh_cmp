@@ -3,6 +3,12 @@
 use strict;
 use Term::ANSIColor;
 
+# first column size = name of column
+my $fcol = 32;
+# second column size = data type of column
+my $scol = 16;
+
+
 sub read_table_from_file($) {
     my $filename = shift;
 
@@ -54,11 +60,17 @@ exit 1;
 sub txt_compose($$) {
     my($long_ref, $short_ref) = @_;
 
-    my $txt = $$long_ref[0] . "\t\t" . $$long_ref[1];
+    my $txt = $$long_ref[0] . ' ' x ($fcol - length($$long_ref[0]));
+    $txt .= $$long_ref[1];
+    
     # ( and ) for data precision
     $txt .= '(' . $$long_ref[2] . ')' if defined $$long_ref[2];
 
-    $txt .= "\t\t\t" . $$short_ref[0] . "\t\t" . $$short_ref[1];
+    # space between tables
+    $txt .= ' ' x (($fcol + $scol) - length($txt));
+
+    $txt .= $$short_ref[0] . ' ' x ($fcol - length($$short_ref[0]));
+    $txt .= $$short_ref[1];
     $txt .= '(' . $$short_ref[2] . ')' if defined $$short_ref[2];
 
 return $txt;
@@ -71,8 +83,9 @@ sub table_header($$) {
     print "\n\nStandard text = without diffrencies.\n";
     print colored('Bold text = no important diffrencies between atributes types.', 'bold'), "\n";
     print colored('Bold and red text = important diffrencies or attributes missing.', 'bold red'), "\n\n";
-    print "${firt_tab_name}\t\t\t\t\t\t${second_tab_name}\n";
-    print "----------------------------------------------------------------------------------\n";
+    print ${firt_tab_name} . ' ' x ($fcol + $scol - length(${firt_tab_name})) . ${second_tab_name} . "\n";
+    # <hr> :-)
+    print '-' x (($fcol + $scol) * 2) . "\n";
 }
 
 
