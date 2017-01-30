@@ -47,7 +47,7 @@ sub print_help() {
     print << "END_OF_HELP";
 
 Je potrebne zadat nazvy dvoch suborov, v torych sa nachadza popis tabuliek pre porovnanie.
-Two arguments. Both are name of file with descriction of table for comparing.
+Two arguments. Both are name of file with description of table for comparing.
 
 END_OF_HELP
 
