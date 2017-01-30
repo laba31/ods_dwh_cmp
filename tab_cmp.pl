@@ -17,19 +17,19 @@ sub read_table_from_file($) {
     my $size = undef;
     my @array_array = ();
 
-    open(FD, $filename) or die "Subor $filename nemozno otvorit pre citanie.\n";
+    open(FD, $filename) or die "I can't open file $filename for reading.\n";
 
     while(<FD>) {
         chomp;
-        # Vsetky biele znaky na zaciatku riadku zmazat
+        # All white on the starting line removed
         s/^\s*//g;
         # irrelevant for comparing
         s/NOT NULL//g;
 
-        # rozdelenie na zaklade mnozstva bielych znakov
+        # Splitting by white characters
         ($col, $atr) = split /\s+/;
 
-        # ak atribut obsahuje zatvorku, zaujima ma aj jeho presnost
+        # Number between () if exist
         if ( $atr =~ /\(/ ) {
             ($atr, $size) = split /\(|\)/, $atr;
             push @array_array, [$col, $atr, $size];
@@ -46,9 +46,8 @@ return @array_array;
 sub print_help() {
     print << "END_OF_HELP";
 
-Je potrebne zadat nazvy dvoch suborov, v torych sa nachadza popis tabuliek.
-Ako prvy argument je tabulka z ODSky, alebo zdrojova tabulka.
-Druhy argument je popis tabulky z odberatelskeho systemu.
+Je potrebne zadat nazvy dvoch suborov, v torych sa nachadza popis tabuliek pre porovnanie.
+Two arguments. Both are name of file with descriction of table for comparing.
 
 END_OF_HELP
 
@@ -91,7 +90,7 @@ sub table_header($$) {
 
 
 ### main #
-# Je potrebne porovnat 2 tabulky
+# Two argumets are mandatory
 &print_help if( (scalar @ARGV) != 2 );
 
 # read tables from files
