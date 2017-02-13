@@ -78,12 +78,12 @@ sub table_header($$) {
 
 sub txt_compose($) {
     my $k = shift;
-    our(%tab1, %tab2);
-    
+        
     # column name
     my $txt = $k . ' ' x ($fcol - length($k));
     # datatype of column
     $txt .= $tab1{$k}->{'datatype'};
+    
     
     # ( and ) for data precision
     $txt .= '(' . $tab1{$k}->{'size'} . ')' if $tab1{$k}->{'size'};
@@ -115,8 +115,8 @@ return $txt;
 
 &table_header($ARGV[0], $ARGV[1]);
 
-print Dumper(%tab1), "\n\n";
-print Dumper(%tab2), "\n\n";
+#print Dumper(%tab1), "\n\n";
+#print Dumper(%tab2), "\n\n";
 
 foreach my $k ( keys %tab1 ) {
 
