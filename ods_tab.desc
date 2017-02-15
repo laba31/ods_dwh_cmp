@@ -1,6 +1,6 @@
 NAME            VARCHAR2(255)               
     Z0          CHAR(128)       
     Z1          CHAR(245)   
-STREET  VARCHAR(345)
+STREET  VARCHAR2(345)
         DATE_FROM       DATE
     DATE_TO     DATE                                     

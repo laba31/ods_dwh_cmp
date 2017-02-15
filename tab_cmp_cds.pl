@@ -69,43 +69,55 @@ sub table_header($$) {
 
     print "\n\nStandard text = without diffrencies.\n";
     print colored('Bold text = no important diffrencies between atributes types.', 'bold'), "\n";
-    print colored('Bold and red text = important diffrencies or attributes missing.', 'bold red'), "\n\n";
+    print colored('Bold and red text = important diffrencies.', 'bold red'), "\n\n";
     print ${firt_tab_name} . ' ' x ($fcol + $scol - length(${firt_tab_name})) . ${second_tab_name} . "\n";
     # <hr> :-)
     print '-' x (($fcol + $scol) * 2) . "\n";
 }
 
 
-sub txt_compose($) {
-    my $k = shift;
-        
+sub table_header_2($) {
+    my $tab_name = shift;
+
+    # <hr>
+    print "\n" . '-' x (($fcol + $scol) * 2) . "\n";
+    #
+    print "\nThe remaining columns in the table ${tab_name}\n\n";
+}
+
+sub txt_tab_compose($$) {
+    my($k, $tab) = @_;
+    
     # column name
     my $txt = $k . ' ' x ($fcol - length($k));
     # datatype of column
-    $txt .= $tab1{$k}->{'datatype'};
-    
+    $txt .= $tab->{$k}->{'datatype'} ;
     
     # ( and ) for data precision
-    $txt .= '(' . $tab1{$k}->{'size'} . ')' if $tab1{$k}->{'size'};
+    $txt .= '(' . $tab->{$k}->{'size'} . ')' if $tab->{$k}->{'size'};
+    
+return $txt;
+}
 
+sub txt_compose($) {
+    my $k = shift;
+
+    # first (left) table description
+    my $txt = txt_tab_compose($k, \%tab1);
+    
     # space between tables
     $txt .= ' ' x (($fcol + $scol) - length($txt));
 
-
-    ##### second table ###
-    $txt .= $k . ' ' x ($fcol - length($k));
-    # datatype of column
-    $txt .= $tab2{$k}->{'datatype'};
-
-    # ( and ) for data precision
-    $txt .= '(' . $tab2{$k}->{'size'} . ')' if $tab2{$k}->{'size'};
+    # second (right) table description
+    $txt .= txt_tab_compose($k, \%tab2);
     
 return $txt;
 }
 
 
 
-### main #
+
+### main ###
 # Two argumets are mandatory
 &print_help if( (scalar @ARGV) != 2 );
 
@@ -114,9 +126,6 @@ return $txt;
 %tab2 = &read_table_from_file( $ARGV[1] );
 
 &table_header($ARGV[0], $ARGV[1]);
-
-#print Dumper(%tab1), "\n\n";
-#print Dumper(%tab2), "\n\n";
 
 foreach my $k ( keys %tab1 ) {
 
@@ -140,11 +149,27 @@ foreach my $k ( keys %tab1 ) {
     elsif($tab1{$k}->{'size'} != $tab2{$k}->{'size'}) {
         $color_name = 'bold red';
     }
-
+    
     my $txt = &txt_compose($k);
 
     print color($color_name) if defined $color_name;
     print "$txt", "\n";
     print color('reset') if defined $color_name;
+
+    delete $tab1{$k};
+    delete $tab2{$k};
+}
+
+
+&table_header_2($ARGV[0]);
+
+foreach my $k ( keys %tab1 ) {
+    print &txt_tab_compose($k, \%tab1), "\n";
+}
+
+&table_header_2($ARGV[1]);
+
+foreach my $k ( keys %tab2 ) {
+    print &txt_tab_compose($k, \%tab2), "\n\n";
 }
 

@@ -1,3 +1,4 @@
 NAME            VARCHAR2(255)               
     Z0          CHAR(128)       
     Z1          VARCHAR2(245)   
+ ANIMAL             VARCHAR2(128)
