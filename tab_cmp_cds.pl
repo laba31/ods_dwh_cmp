@@ -71,17 +71,17 @@ sub table_header($$) {
     print colored('Bold text = no important diffrencies between atributes types.', 'bold'), "\n";
     print colored('Bold and red text = important diffrencies.', 'bold red'), "\n\n";
     print ${firt_tab_name} . ' ' x ($fcol + $scol - length(${firt_tab_name})) . ${second_tab_name} . "\n";
-    # <hr> :-)
-    print '-' x (($fcol + $scol) * 2) . "\n";
+
+    &hr;
+    print "\n";
 }
 
 
 sub table_header_2($) {
     my $tab_name = shift;
 
-    # <hr>
-    print "\n" . '-' x (($fcol + $scol) * 2) . "\n";
-    #
+    print "\n";
+    &hr;
     print "\nThe remaining columns in the table ${tab_name}\n\n";
 }
 
@@ -98,6 +98,12 @@ sub txt_tab_compose($$) {
     
 return $txt;
 }
+
+# <HR>
+sub hr() {
+    print '-' x (($fcol + $scol) * 2) . "\n";
+}
+
 
 sub txt_compose($) {
     my $k = shift;
@@ -147,7 +153,7 @@ foreach my $k ( keys %tab1 ) {
         else { $color_name = 'bold red'; }
     }
     elsif($tab1{$k}->{'size'} != $tab2{$k}->{'size'}) {
-        $color_name = 'bold red';
+        $color_name = 'bold';
     }
     
     my $txt = &txt_compose($k);
@@ -170,6 +176,10 @@ foreach my $k ( keys %tab1 ) {
 &table_header_2($ARGV[1]);
 
 foreach my $k ( keys %tab2 ) {
-    print &txt_tab_compose($k, \%tab2), "\n\n";
+    print &txt_tab_compose($k, \%tab2), "\n";
 }
+
+print "\n";
+&hr;
+print "\n";
 
