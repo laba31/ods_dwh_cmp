@@ -166,15 +166,16 @@ foreach my $k ( keys %tab1 ) {
     delete $tab2{$k};
 }
 
-
 &table_header_2($ARGV[0]);
 
+# Missing atributess
 foreach my $k ( keys %tab1 ) {
     print &txt_tab_compose($k, \%tab1), "\n";
 }
 
 &table_header_2($ARGV[1]);
 
+# Missing atributess
 foreach my $k ( keys %tab2 ) {
     print &txt_tab_compose($k, \%tab2), "\n";
 }
